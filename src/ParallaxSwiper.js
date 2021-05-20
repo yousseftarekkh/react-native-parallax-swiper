@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { View, Animated, StyleSheet, Dimensions } from 'react-native';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { View, Animated, StyleSheet, Dimensions } from "react-native";
+import PropTypes from "prop-types";
 
 import ParallaxSwiperPage, {
   ParallaxSwiperPagePropTypes,
-} from './ParallaxSwiperPage';
+} from "./ParallaxSwiperPage";
 
-const { width: deviceWidth, height: deviceHeight } = Dimensions.get('window');
+const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
 
 class ParallaxSwiper extends Component {
   state = {
@@ -55,7 +55,7 @@ class ParallaxSwiper extends Component {
       this.animatedScrollViewHasScrolled = true;
     }
 
-    this.animatedScrollView._component.scrollTo({
+    this.animatedScrollView._component?.scrollTo?.({
       x: vertical ? 0 : scrollOffset,
       y: vertical ? scrollOffset : 0,
       animated,
@@ -78,6 +78,7 @@ class ParallaxSwiper extends Component {
       animatedValue,
       scrollEnabled,
       showProgressBar,
+      nestedScrollEnabled,
       progressBarThickness,
       progressBarBackgroundColor,
       progressBarValueBackgroundColor,
@@ -108,17 +109,18 @@ class ParallaxSwiper extends Component {
                   : { contentOffset: { x: animatedValue } },
               },
             ],
-            { useNativeDriver: true },
+            { useNativeDriver: true }
           )}
           showsVerticalScrollIndicator={showsVerticalScrollIndicator}
           showsHorizontalScrollIndicator={showsHorizontalScrollIndicator}
-          onMomentumScrollEnd={e => this.onScrollEnd(e)}
+          onMomentumScrollEnd={(e) => this.onScrollEnd(e)}
+          nestedScrollEnabled={nestedScrollEnabled}
         >
           {React.Children.map(children, (child, i) => {
             const dividerBackgroundColor =
               i !== children.length - 1 && children.length > 0
                 ? dividerColor
-                : 'transparent';
+                : "transparent";
 
             return (
               <View key={i} style={[styles.pageOuterContainer, { zIndex: -i }]}>
@@ -166,25 +168,25 @@ class ParallaxSwiper extends Component {
                       translateX: vertical
                         ? 0
                         : animatedValue.interpolate({
-                          inputRange: [
-                            0,
-                            (this.state.width + dividerWidth) *
+                            inputRange: [
+                              0,
+                              (this.state.width + dividerWidth) *
                                 (children.length - 1),
-                          ],
-                          outputRange: [-this.state.width, 0],
-                          extrapolate: 'clamp',
-                        }),
+                            ],
+                            outputRange: [-this.state.width, 0],
+                            extrapolate: "clamp",
+                          }),
                     },
                     {
                       translateY: vertical
                         ? animatedValue.interpolate({
-                          inputRange: [
-                            0,
-                            this.state.height * (children.length - 1),
-                          ],
-                          outputRange: [-this.state.height, 0],
-                          extrapolate: 'clamp',
-                        })
+                            inputRange: [
+                              0,
+                              this.state.height * (children.length - 1),
+                            ],
+                            outputRange: [-this.state.height, 0],
+                            extrapolate: "clamp",
+                          })
                         : 0,
                     },
                   ],
@@ -200,7 +202,7 @@ class ParallaxSwiper extends Component {
 
 const styles = StyleSheet.create({
   pageOuterContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   progressBar: {
     ...StyleSheet.absoluteFillObject,
@@ -214,7 +216,7 @@ ParallaxSwiper.propTypes = {
   speed(props, propName, componentName) {
     if (props[propName] < 0 || props[propName] > 1) {
       return new Error(
-        `Invalid 'speed' prop for ${componentName}. Number should be between 0 and 1.`,
+        `Invalid 'speed' prop for ${componentName}. Number should be between 0 and 1.`
       );
     }
   },
@@ -224,7 +226,7 @@ ParallaxSwiper.propTypes = {
     const childComponentName = propValue[key].type.displayName;
     if (!/ParallaxSwiperPage/.test(childComponentName)) {
       return new Error(
-        `Invalid component '${childComponentName}' supplied to ${componentName}. Use 'ParallaxSwiperPage' instead.`,
+        `Invalid component '${childComponentName}' supplied to ${componentName}. Use 'ParallaxSwiperPage' instead.`
       );
     }
   }),
@@ -240,8 +242,8 @@ ParallaxSwiper.propTypes = {
 };
 
 ParallaxSwiper.defaultProps = {
-  backgroundColor: 'black',
-  dividerColor: 'black',
+  backgroundColor: "black",
+  dividerColor: "black",
   dividerWidth: 8,
   speed: 0.25,
   showsHorizontalScrollIndicator: false,
@@ -253,8 +255,8 @@ ParallaxSwiper.defaultProps = {
   scrollEnabled: true,
   showProgressBar: false,
   progressBarThickness: 4,
-  progressBarBackgroundColor: 'rgba(255,255,255,0.25)',
-  progressBarValueBackgroundColor: 'white',
+  progressBarBackgroundColor: "rgba(255,255,255,0.25)",
+  progressBarValueBackgroundColor: "white",
 };
 
 export default ParallaxSwiper;
