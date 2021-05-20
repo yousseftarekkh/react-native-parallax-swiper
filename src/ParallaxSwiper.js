@@ -69,6 +69,7 @@ class ParallaxSwiper extends Component {
     const {
       children,
       speed,
+      style,
       backgroundColor,
       dividerColor,
       dividerWidth,
@@ -91,13 +92,16 @@ class ParallaxSwiper extends Component {
             this.animatedScrollView = scrollView;
           }}
           scrollEnabled={scrollEnabled}
-          style={{
-            width: vertical
-              ? this.state.width
-              : this.state.width + dividerWidth,
-            height: this.state.height,
-            backgroundColor,
-          }}
+          style={[
+            {
+              width: vertical
+                ? this.state.width
+                : this.state.width + dividerWidth,
+              height: this.state.height,
+              backgroundColor,
+            },
+            style,
+          ]}
           horizontal={!vertical}
           pagingEnabled
           scrollEventThrottle={1}
